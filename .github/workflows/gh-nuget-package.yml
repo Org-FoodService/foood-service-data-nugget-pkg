@@ -36,5 +36,5 @@ jobs:
       - name: Publish NuGet Package
         run: |
           for nupkg in $(pwd)/artifacts/*.nupkg; do
-            dotnet nuget push $nupkg --api-key ${{ secrets.PACKAGES_TOKEN }} --source https://nuget.pkg.github.com/Org-FoodService/index.json
+            dotnet nuget push $nupkg --api-key ${{ secrets.PACKAGES_TOKEN }} --source "github"
           done

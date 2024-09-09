@@ -1,4 +1,3 @@
-# publish-nuget.yml
 name: Publish NuGet Package on Push to Main
 
 on:
@@ -19,10 +18,11 @@ jobs:
         with:
           dotnet-version: "8.0"
 
-      - name: Build, Test, and Publish NuGet
-        uses: wahinekai/actions-publish-nuget@v3.0.1
-        with:
-          version: 1.0.0
-          project-path: src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj
-          solution-path: FoodService.Data.Nugget.Pkg.sln
-          nuget-feed-password: ${{ secrets.PACKAGES_TOKEN }}
+      - name: Build Project
+        run: dotnet build src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj
+
+      - name: Pack NuGet Package
+        run: dotnet pack src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj -o $(Build.ArtifactStagingDirectory)
+
+      - name: Publish NuGet Package
+        run: dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --api-key ${{ secrets.PACKAGES_TOKEN }} --source https://nuget.pkg.github.com/Org-FoodService/index.json

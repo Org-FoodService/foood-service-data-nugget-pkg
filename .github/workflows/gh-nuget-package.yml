@@ -20,7 +20,7 @@ jobs:
 
       - name: Add GitHub Packages NuGet source
         run: dotnet nuget add source --username NicolasBuscarini --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Org-FoodService/index.json"
-      
+
       - name: Restore
         run: dotnet restore
 
@@ -28,7 +28,13 @@ jobs:
         run: dotnet build src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj
 
       - name: Pack NuGet Package
-        run: dotnet pack src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj -o $(Build.ArtifactStagingDirectory)
+        run: |
+          PACK_OUTPUT_DIR=$(pwd)/artifacts
+          mkdir -p $PACK_OUTPUT_DIR
+          dotnet pack src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj -o $PACK_OUTPUT_DIR
 
       - name: Publish NuGet Package
-        run: dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --api-key ${{ secrets.PACKAGES_TOKEN }} --source https://nuget.pkg.github.com/Org-FoodService/index.json
+        run: |
+          for nupkg in $(pwd)/artifacts/*.nupkg; do
+            dotnet nuget push $nupkg --api-key ${{ secrets.PACKAGES_TOKEN }} --source https://nuget.pkg.github.com/Org-FoodService/index.json
+          done

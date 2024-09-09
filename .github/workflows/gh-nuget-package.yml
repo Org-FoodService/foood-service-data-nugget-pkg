@@ -1,0 +1,28 @@
+# publish-nuget.yml
+name: Publish NuGet Package on Push to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.0"
+
+      - name: Build, Test, and Publish NuGet
+        uses: wahinekai/actions-publish-nuget@v3.0.1
+        with:
+          version: 1.0.0
+          project-path: src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj
+          solution-path: FoodService.Data.Nugget.Pkg.sln
+          nuget-feed-password: ${{ secrets.PACKAGES_TOKEN }}

@@ -25,13 +25,13 @@ jobs:
         run: dotnet restore
 
       - name: Build Project
-        run: dotnet build src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj
+        run: dotnet build src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj --configuration Release
 
       - name: Pack NuGet Package
         run: |
           PACK_OUTPUT_DIR=$(pwd)/artifacts
           mkdir -p $PACK_OUTPUT_DIR
-          dotnet pack src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj -o $PACK_OUTPUT_DIR
+          dotnet pack src/FoodService.Data.Nugget.Pkg/FoodService.Data.Nugget.Pkg.csproj --configuration Release -o $PACK_OUTPUT_DIR
 
       - name: Publish NuGet Package
         run: |

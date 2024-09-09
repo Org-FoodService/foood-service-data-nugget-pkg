@@ -17,7 +17,15 @@
 	  <PackageProjectUrl>https://github.com/Org-FoodService</PackageProjectUrl>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath>/</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="FoodService.Models" Version="1.1.13" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
